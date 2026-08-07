@@ -29,9 +29,9 @@ you need explicit selection.
 
 The API also supports device discovery, sample interval and channel settings,
 and persistent per-channel calibration. See the
-[API guide](https://github.com/Hvunt/thermopulp-api/blob/main/docs/python-api.md)
+[API guide](https://github.com/we-devices/thermopulp-api/blob/main/docs/python-api.md)
 and
-[complete example](https://github.com/Hvunt/thermopulp-api/blob/main/examples/read_temperatures.py).
+[complete example](https://github.com/we-devices/thermopulp-api/blob/main/examples/read_temperatures.py).
 
 The desktop UI and API cannot own the same serial port simultaneously. Close
 or disconnect the UI before opening the device through Python.
@@ -49,4 +49,4 @@ python -m twine check --strict dist/*
 ## License
 
 Thermopulp Python API is released under the
-[MIT License](https://github.com/Hvunt/thermopulp-api/blob/main/LICENSE).
+[MIT License](https://github.com/we-devices/thermopulp-api/blob/main/LICENSE).

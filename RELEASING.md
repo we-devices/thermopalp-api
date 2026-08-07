@@ -9,7 +9,7 @@ Create pending publishers on PyPI and TestPyPI using these values:
 | Setting | PyPI | TestPyPI |
 |---|---|---|
 | PyPI project name | `thermopulp` | `thermopulp` |
-| GitHub owner | `Hvunt` | `Hvunt` |
+| GitHub owner | `we-devices` | `we-devices` |
 | Repository | `thermopulp-api` | `thermopulp-api` |
 | Workflow | `publish-pypi.yml` | `publish-pypi.yml` |
 | Environment | `pypi` | `testpypi` |

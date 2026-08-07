@@ -11,7 +11,7 @@ requires-python = ">=3.10"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [
-    { name = "Sergiu Popov", email = "sg.popov@pm.me" },
+    { name = "Wise Electronics" },
 ]
 keywords = [
     "thermopulp",
@@ -52,11 +52,11 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/Hvunt/thermopulp-api"
-Documentation = "https://github.com/Hvunt/thermopulp-api/blob/main/docs/python-api.md"
-Repository = "https://github.com/Hvunt/thermopulp-api.git"
-Issues = "https://github.com/Hvunt/thermopulp-api/issues"
-Changelog = "https://github.com/Hvunt/thermopulp-api/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/we-devices/thermopulp-api"
+Documentation = "https://github.com/we-devices/thermopulp-api/blob/main/docs/python-api.md"
+Repository = "https://github.com/we-devices/thermopulp-api.git"
+Issues = "https://github.com/we-devices/thermopulp-api/issues"
+Changelog = "https://github.com/we-devices/thermopulp-api/blob/main/CHANGELOG.md"
 
 [tool.setuptools.packages.find]
 include = ["thermopulp*"]
