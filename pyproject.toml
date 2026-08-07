@@ -1,0 +1,68 @@
+[build-system]
+requires = ["setuptools>=77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "thermopulp"
+dynamic = ["version"]
+description = "Python API for Thermopulp USB temperature devices"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Sergiu Popov", email = "sg.popov@pm.me" },
+]
+keywords = [
+    "thermopulp",
+    "temperature",
+    "thermocouple",
+    "data-logger",
+    "instrumentation",
+    "usb-cdc",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Manufacturing",
+    "Intended Audience :: Science/Research",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Hardware :: Hardware Drivers",
+    "Typing :: Typed",
+]
+dependencies = [
+    "pyserial>=3.5,<4",
+]
+
+[project.optional-dependencies]
+dev = [
+    "build>=1.2.2,<2",
+    "tomli>=2.0,<3; python_version < '3.11'",
+    "twine>=6,<7",
+]
+
+[project.urls]
+Homepage = "https://github.com/Hvunt/thermopulp-api"
+Documentation = "https://github.com/Hvunt/thermopulp-api/blob/main/docs/python-api.md"
+Repository = "https://github.com/Hvunt/thermopulp-api.git"
+Issues = "https://github.com/Hvunt/thermopulp-api/issues"
+Changelog = "https://github.com/Hvunt/thermopulp-api/blob/main/CHANGELOG.md"
+
+[tool.setuptools.packages.find]
+include = ["thermopulp*"]
+
+[tool.setuptools.dynamic]
+version = { attr = "thermopulp.__version__" }
+
+[tool.setuptools.package-data]
+thermopulp = ["py.typed"]
