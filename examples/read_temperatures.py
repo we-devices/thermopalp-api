@@ -1,10 +1,10 @@
-"""Print Thermopulp samples without starting the desktop UI."""
+"""Print Thermopalp samples without starting the desktop UI."""
 
 from __future__ import annotations
 
 import argparse
 
-from thermopulp import ThermopulpDevice, ThermopulpError, discover_devices
+from thermopalp import ThermopalpDevice, ThermopalpError, discover_devices
 
 
 def main() -> None:
@@ -19,7 +19,7 @@ def main() -> None:
             print(f"Found: {device.display_name}")
 
     try:
-        with ThermopulpDevice(args.port) as device:
+        with ThermopalpDevice(args.port) as device:
             info = device.device_info
             if info is not None:
                 print(
@@ -34,8 +34,8 @@ def main() -> None:
                     and sample.statuses[index] == 0
                 )
                 print(f"{sample.uptime_ms / 1000:9.3f} s  {values}")
-    except ThermopulpError as error:
-        raise SystemExit(f"Thermopulp error: {error}") from None
+    except ThermopalpError as error:
+        raise SystemExit(f"Thermopalp error: {error}") from None
 
 
 if __name__ == "__main__":

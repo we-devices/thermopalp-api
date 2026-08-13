@@ -37,27 +37,27 @@ from .protocol import (
 )
 
 
-THERMOPULP_USB_VID = 0x0483
-THERMOPULP_USB_PID = 0x5740
+THERMOPALP_USB_VID = 0x0483
+THERMOPALP_USB_PID = 0x5740
 
 
-class ThermopulpError(Exception):
-    """Base class for Thermopulp API failures."""
+class ThermopalpError(Exception):
+    """Base class for Thermopalp API failures."""
 
 
-class ThermopulpConnectionError(ThermopulpError):
+class ThermopalpConnectionError(ThermopalpError):
     """The serial device could not be found, opened, or accessed."""
 
 
-class ThermopulpTimeoutError(ThermopulpError):
+class ThermopalpTimeoutError(ThermopalpError):
     """The device did not send the expected response in time."""
 
 
-class ThermopulpProtocolError(ThermopulpError):
+class ThermopalpProtocolError(ThermopalpError):
     """The device sent malformed or unsupported protocol data."""
 
 
-class DeviceRejectedError(ThermopulpError):
+class DeviceRejectedError(ThermopalpError):
     """The device rejected a valid host command."""
 
     def __init__(self, request_type: int, error_code: int) -> None:
@@ -85,25 +85,25 @@ class DeviceDescriptor:
     product_id: int | None
 
     @property
-    def is_thermopulp(self) -> bool:
+    def is_thermopalp(self) -> bool:
         identity_match = (
-            self.vendor_id == THERMOPULP_USB_VID
-            and self.product_id == THERMOPULP_USB_PID
+            self.vendor_id == THERMOPALP_USB_VID
+            and self.product_id == THERMOPALP_USB_PID
         )
         text = " ".join(
             (self.name, self.description, self.manufacturer)
         ).lower()
-        return identity_match or "thermopulp" in text
+        return identity_match or "thermopalp" in text
 
     @property
     def display_name(self) -> str:
-        label = self.description or self.manufacturer or self.name or "Thermopulp"
+        label = self.description or self.manufacturer or self.name or "Thermopalp"
         serial_suffix = f" · {self.serial_number}" if self.serial_number else ""
         return f"{label} ({self.port}){serial_suffix}"
 
 
 def discover_devices(*, include_all_serial: bool = False) -> list[DeviceDescriptor]:
-    """Return connected Thermopulp devices, or every serial port when requested."""
+    """Return connected Thermopalp devices, or every serial port when requested."""
 
     devices = [
         DeviceDescriptor(
@@ -118,12 +118,12 @@ def discover_devices(*, include_all_serial: bool = False) -> list[DeviceDescript
         for info in list_ports.comports()
     ]
     if not include_all_serial:
-        devices = [device for device in devices if device.is_thermopulp]
-    return sorted(devices, key=lambda device: (not device.is_thermopulp, device.port))
+        devices = [device for device in devices if device.is_thermopalp]
+    return sorted(devices, key=lambda device: (not device.is_thermopalp, device.port))
 
 
-class ThermopulpDevice:
-    """Synchronous, UI-independent connection to one Thermopulp device.
+class ThermopalpDevice:
+    """Synchronous, UI-independent connection to one Thermopalp device.
 
     The class is safe for sequential use from one or more threads. Only one
     consumer should read samples from a connection at a time.
@@ -164,7 +164,7 @@ class ThermopulpDevice:
     def streaming(self) -> bool:
         return self._streaming
 
-    def connect(self) -> ThermopulpDevice:
+    def connect(self) -> ThermopalpDevice:
         """Open the device, stop stale streaming, and read its metadata."""
 
         with self._lock:
@@ -189,13 +189,13 @@ class ThermopulpDevice:
                 self.stop_streaming()
                 self.device_info = self.get_info()
                 self.settings = self.get_settings()
-            except ThermopulpError:
+            except ThermopalpError:
                 self._close_transport()
                 raise
             except (OSError, serial.SerialException) as error:
                 self._close_transport()
-                raise ThermopulpConnectionError(
-                    f"Could not open {port}: {error}. Disconnect the Thermopulp UI "
+                raise ThermopalpConnectionError(
+                    f"Could not open {port}: {error}. Disconnect the Thermopalp UI "
                     "or any other serial client using this port."
                 ) from error
             return self
@@ -210,11 +210,11 @@ class ThermopulpDevice:
             try:
                 if self._streaming:
                     self.stop_streaming()
-            except ThermopulpError:
+            except ThermopalpError:
                 pass
             self._close_transport()
 
-    def __enter__(self) -> ThermopulpDevice:
+    def __enter__(self) -> ThermopalpDevice:
         return self.connect()
 
     def __exit__(self, *_exc_info: object) -> None:
@@ -228,7 +228,7 @@ class ThermopulpDevice:
             try:
                 info = parse_info(frame)
             except ProtocolError as error:
-                raise ThermopulpProtocolError(str(error)) from error
+                raise ThermopalpProtocolError(str(error)) from error
             self.device_info = info
             return info
 
@@ -240,7 +240,7 @@ class ThermopulpDevice:
             try:
                 settings = parse_settings(frame)
             except ProtocolError as error:
-                raise ThermopulpProtocolError(str(error)) from error
+                raise ThermopalpProtocolError(str(error)) from error
             self.settings = settings
             self._streaming = settings.streaming
             return settings
@@ -344,7 +344,7 @@ class ThermopulpDevice:
         with self._lock:
             self._require_connected()
             if not self._streaming:
-                raise ThermopulpError("Streaming is not active")
+                raise ThermopalpError("Streaming is not active")
             deadline = time.monotonic() + self._effective_timeout(timeout)
             while True:
                 for index, frame in enumerate(self._inbox):
@@ -353,7 +353,7 @@ class ThermopulpDevice:
                         try:
                             return parse_sample(frame)
                         except ProtocolError as error:
-                            raise ThermopulpProtocolError(str(error)) from error
+                            raise ThermopalpProtocolError(str(error)) from error
                 self._read_into_inbox(deadline)
 
     def samples(
@@ -381,7 +381,7 @@ class ThermopulpDevice:
             if stop_on_exit and started_here and self.connected:
                 try:
                     self.stop_streaming(timeout=timeout)
-                except ThermopulpError:
+                except ThermopalpError:
                     pass
 
     def read_samples(
@@ -398,13 +398,13 @@ class ThermopulpDevice:
             return self._requested_port
         devices = discover_devices()
         if not devices:
-            raise ThermopulpConnectionError(
-                "No Thermopulp device found; pass an explicit serial port if needed"
+            raise ThermopalpConnectionError(
+                "No Thermopalp device found; pass an explicit serial port if needed"
             )
         if len(devices) > 1:
             ports = ", ".join(device.port for device in devices)
-            raise ThermopulpConnectionError(
-                f"Multiple Thermopulp devices found ({ports}); select a port explicitly"
+            raise ThermopalpConnectionError(
+                f"Multiple Thermopalp devices found ({ports}); select a port explicitly"
             )
         return devices[0].port
 
@@ -437,7 +437,7 @@ class ThermopulpDevice:
             request_type, MessageType.ACK, payload, timeout=timeout
         )
         if len(frame.payload) != 1 or frame.payload[0] != request_type:
-            raise ThermopulpProtocolError("ACK does not match the command")
+            raise ThermopalpProtocolError("ACK does not match the command")
 
     def _send(self, message_type: MessageType, payload: bytes) -> int:
         transport = self._require_connected()
@@ -447,9 +447,9 @@ class ThermopulpDevice:
             written = transport.write(encoded)
             transport.flush()
         except (OSError, serial.SerialException) as error:
-            raise ThermopulpConnectionError(f"Serial write failed: {error}") from error
+            raise ThermopalpConnectionError(f"Serial write failed: {error}") from error
         if written != len(encoded):
-            raise ThermopulpConnectionError("Serial write was incomplete")
+            raise ThermopalpConnectionError("Serial write was incomplete")
         return sequence
 
     def _wait_for_response(
@@ -474,20 +474,20 @@ class ThermopulpDevice:
     def _read_into_inbox(self, deadline: float) -> None:
         transport = self._require_connected()
         if time.monotonic() >= deadline:
-            raise ThermopulpTimeoutError("Timed out waiting for the device")
+            raise ThermopalpTimeoutError("Timed out waiting for the device")
         try:
             waiting = transport.in_waiting
             data = transport.read(max(1, waiting))
         except (OSError, serial.SerialException) as error:
-            raise ThermopulpConnectionError(f"Serial read failed: {error}") from error
+            raise ThermopalpConnectionError(f"Serial read failed: {error}") from error
         if not data:
             return
         frames, errors = self._decoder.feed(data)
         if errors:
-            raise ThermopulpProtocolError(errors[0])
+            raise ThermopalpProtocolError(errors[0])
         for frame in frames:
             if frame.version != PROTOCOL_VERSION:
-                raise ThermopulpProtocolError(
+                raise ThermopalpProtocolError(
                     f"Unsupported device protocol version {frame.version}"
                 )
             self._inbox.append(frame)
@@ -495,7 +495,7 @@ class ThermopulpDevice:
     @staticmethod
     def _raise_device_error(frame: Frame) -> None:
         if len(frame.payload) != 2:
-            raise ThermopulpProtocolError("Invalid ERROR payload")
+            raise ThermopalpProtocolError("Invalid ERROR payload")
         raise DeviceRejectedError(frame.payload[0], frame.payload[1])
 
     def _effective_timeout(self, timeout: float | None) -> float:
@@ -514,7 +514,7 @@ class ThermopulpDevice:
 
     def _require_connected(self) -> serial.Serial:
         if not self.connected or self._serial is None:
-            raise ThermopulpConnectionError("Device is not connected")
+            raise ThermopalpConnectionError("Device is not connected")
         return self._serial
 
     def _close_transport(self) -> None:

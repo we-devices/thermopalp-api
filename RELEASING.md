@@ -1,6 +1,6 @@
-# Releasing Thermopulp API to PyPI
+# Releasing Thermopalp API to PyPI
 
-The PyPI distribution and import package are both named `thermopulp`.
+The PyPI distribution and import package are both named `thermopalp`.
 
 ## One-time Trusted Publisher setup
 
@@ -8,9 +8,9 @@ Create pending publishers on PyPI and TestPyPI using these values:
 
 | Setting | PyPI | TestPyPI |
 |---|---|---|
-| PyPI project name | `thermopulp` | `thermopulp` |
+| PyPI project name | `thermopalp` | `thermopalp` |
 | GitHub owner | `we-devices` | `we-devices` |
-| Repository | `thermopulp-api` | `thermopulp-api` |
+| Repository | `thermopalp-api` | `thermopalp-api` |
 | Workflow | `publish-pypi.yml` | `publish-pypi.yml` |
 | Environment | `pypi` | `testpypi` |
 
@@ -19,7 +19,7 @@ The workflow uses Trusted Publishing and needs no long-lived PyPI token.
 
 ## Prepare and validate
 
-1. Update `thermopulp.__version__` and `CHANGELOG.md`.
+1. Update `thermopalp.__version__` and `CHANGELOG.md`.
 2. Run:
 
    ```console
@@ -41,7 +41,7 @@ dependency from PyPI and the exact API version from TestPyPI:
 ```console
 python -m pip install "pyserial>=3.5,<4"
 python -m pip install --index-url https://test.pypi.org/simple/ --no-deps \
-    thermopulp==0.1.0
+    thermopalp==0.1.0
 ```
 
 Replace `0.1.0` with the version being tested.

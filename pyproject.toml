@@ -3,9 +3,9 @@ requires = ["setuptools>=77.0.3"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "thermopulp"
+name = "thermopalp"
 dynamic = ["version"]
-description = "Python API for Thermopulp USB temperature devices"
+description = "Python API for Thermopalp USB temperature devices"
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
@@ -14,7 +14,7 @@ authors = [
     { name = "Wise Electronics" },
 ]
 keywords = [
-    "thermopulp",
+    "thermopalp",
     "temperature",
     "thermocouple",
     "data-logger",
@@ -52,17 +52,17 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/we-devices/thermopulp-api"
-Documentation = "https://github.com/we-devices/thermopulp-api/blob/main/docs/python-api.md"
-Repository = "https://github.com/we-devices/thermopulp-api.git"
-Issues = "https://github.com/we-devices/thermopulp-api/issues"
-Changelog = "https://github.com/we-devices/thermopulp-api/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/we-devices/thermopalp-api"
+Documentation = "https://github.com/we-devices/thermopalp-api/blob/main/docs/python-api.md"
+Repository = "https://github.com/we-devices/thermopalp-api.git"
+Issues = "https://github.com/we-devices/thermopalp-api/issues"
+Changelog = "https://github.com/we-devices/thermopalp-api/blob/main/CHANGELOG.md"
 
 [tool.setuptools.packages.find]
-include = ["thermopulp*"]
+include = ["thermopalp*"]
 
 [tool.setuptools.dynamic]
-version = { attr = "thermopulp.__version__" }
+version = { attr = "thermopalp.__version__" }
 
 [tool.setuptools.package-data]
-thermopulp = ["py.typed"]
+thermopalp = ["py.typed"]

@@ -1,4 +1,4 @@
-"""Public Python API for Thermopulp temperature devices."""
+"""Public Python API for Thermopalp temperature devices."""
 
 from .protocol import (
     ChannelCalibration,
@@ -10,11 +10,11 @@ from .protocol import (
 from .device import (
     DeviceDescriptor,
     DeviceRejectedError,
-    ThermopulpConnectionError,
-    ThermopulpDevice,
-    ThermopulpError,
-    ThermopulpProtocolError,
-    ThermopulpTimeoutError,
+    ThermopalpConnectionError,
+    ThermopalpDevice,
+    ThermopalpError,
+    ThermopalpProtocolError,
+    ThermopalpTimeoutError,
     discover_devices,
 )
 
@@ -27,11 +27,11 @@ __all__ = [
     "DeviceRejectedError",
     "DeviceSettings",
     "Sample",
-    "ThermopulpConnectionError",
-    "ThermopulpDevice",
-    "ThermopulpError",
-    "ThermopulpProtocolError",
-    "ThermopulpTimeoutError",
+    "ThermopalpConnectionError",
+    "ThermopalpDevice",
+    "ThermopalpError",
+    "ThermopalpProtocolError",
+    "ThermopalpTimeoutError",
     "__version__",
     "discover_devices",
 ]

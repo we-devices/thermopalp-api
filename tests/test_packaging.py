@@ -21,14 +21,14 @@ class PackagingTests(unittest.TestCase):
         )
         project = metadata["project"]
 
-        self.assertEqual(project["name"], "thermopulp")
+        self.assertEqual(project["name"], "thermopalp")
         self.assertEqual(project["dependencies"], ["pyserial>=3.5,<4"])
         self.assertEqual(project["license"], "MIT")
         self.assertNotIn("gui-scripts", project)
         self.assertNotIn("ui", project["optional-dependencies"])
         self.assertEqual(
             metadata["tool"]["setuptools"]["packages"]["find"]["include"],
-            ["thermopulp*"],
+            ["thermopalp*"],
         )
 
     def test_version_is_sourced_from_api_package(self) -> None:
@@ -38,7 +38,7 @@ class PackagingTests(unittest.TestCase):
         self.assertEqual(metadata["project"]["dynamic"], ["version"])
         self.assertEqual(
             metadata["tool"]["setuptools"]["dynamic"]["version"]["attr"],
-            "thermopulp.__version__",
+            "thermopalp.__version__",
         )
 
     def test_import_has_no_ui_dependency(self) -> None:
@@ -46,9 +46,9 @@ class PackagingTests(unittest.TestCase):
             [
                 sys.executable,
                 "-c",
-                "import sys; import thermopulp; "
-                "print('thermopulp_ui' in sys.modules); "
-                "print(thermopulp.__version__)",
+                "import sys; import thermopalp; "
+                "print('thermopalp_ui' in sys.modules); "
+                "print(thermopalp.__version__)",
             ],
             cwd=PROJECT_ROOT,
             check=True,
@@ -58,7 +58,7 @@ class PackagingTests(unittest.TestCase):
         self.assertEqual(result.stdout.splitlines(), ["False", "0.1.0"])
 
     def test_typed_package_marker_is_present(self) -> None:
-        self.assertTrue((PROJECT_ROOT / "thermopulp" / "py.typed").is_file())
+        self.assertTrue((PROJECT_ROOT / "thermopalp" / "py.typed").is_file())
 
 
 if __name__ == "__main__":

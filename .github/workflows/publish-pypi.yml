@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: testpypi
-      url: https://test.pypi.org/p/thermopulp
+      url: https://test.pypi.org/p/thermopalp
     permissions:
       id-token: write
     steps:
@@ -61,7 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/p/thermopulp
+      url: https://pypi.org/p/thermopalp
     permissions:
       id-token: write
     steps:

@@ -5,12 +5,12 @@ import struct
 import unittest
 from unittest.mock import patch
 
-from thermopulp import (
+from thermopalp import (
     DeviceRejectedError,
-    ThermopulpDevice,
+    ThermopalpDevice,
     discover_devices,
 )
-from thermopulp.protocol import (
+from thermopalp.protocol import (
     ErrorCode,
     MessageType,
     SettingId,
@@ -141,13 +141,13 @@ class PythonApiTests(unittest.TestCase):
     def setUp(self) -> None:
         self.transport = FakeSerial()
         patcher = patch(
-            "thermopulp.device.serial.Serial", return_value=self.transport
+            "thermopalp.device.serial.Serial", return_value=self.transport
         )
         self.addCleanup(patcher.stop)
         patcher.start()
 
     def test_context_manager_reads_metadata_and_samples(self) -> None:
-        with ThermopulpDevice("COM42") as device:
+        with ThermopalpDevice("COM42") as device:
             self.assertTrue(device.connected)
             self.assertEqual(device.device_info.firmware_version, (0, 6, 0))
             self.assertEqual(device.settings.sample_interval_ms, 1000)
@@ -165,7 +165,7 @@ class PythonApiTests(unittest.TestCase):
         )
 
     def test_settings_are_applied_and_read_back(self) -> None:
-        with ThermopulpDevice("COM42") as device:
+        with ThermopalpDevice("COM42") as device:
             settings = device.set_sample_interval(2500)
             settings = device.set_channel_mask(0x05)
 
@@ -173,7 +173,7 @@ class PythonApiTests(unittest.TestCase):
         self.assertEqual(settings.channel_mask, 0x05)
 
     def test_stop_discards_samples_queued_before_stop_ack(self) -> None:
-        with ThermopulpDevice("COM42") as device:
+        with ThermopalpDevice("COM42") as device:
             device.start_streaming()
             self.assertTrue(
                 any(frame.message_type == MessageType.SAMPLE for frame in device._inbox)
@@ -186,7 +186,7 @@ class PythonApiTests(unittest.TestCase):
             )
 
     def test_device_error_becomes_typed_exception(self) -> None:
-        with ThermopulpDevice("COM42") as device:
+        with ThermopalpDevice("COM42") as device:
             self.transport.reject_settings = True
             with self.assertRaises(DeviceRejectedError) as context:
                 device.set_sample_interval(2000)
@@ -208,14 +208,14 @@ class PythonApiTests(unittest.TestCase):
             SimpleNamespace(
                 device="COM42",
                 name="COM42",
-                description="Thermopulp",
-                manufacturer="Thermopulp",
+                description="Thermopalp",
+                manufacturer="Thermopalp",
                 serial_number="TP001",
                 vid=0x0483,
                 pid=0x5740,
             ),
         ]
-        with patch("thermopulp.device.list_ports.comports", return_value=ports):
+        with patch("thermopalp.device.list_ports.comports", return_value=ports):
             devices = discover_devices()
 
         self.assertEqual([device.port for device in devices], ["COM42"])

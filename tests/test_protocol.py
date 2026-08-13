@@ -1,7 +1,7 @@
 import struct
 import unittest
 
-from thermopulp.protocol import (
+from thermopalp.protocol import (
     Frame,
     MAX_PAYLOAD_SIZE,
     MessageType,

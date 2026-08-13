@@ -1,15 +1,15 @@
-# Thermopulp Python API
+# Thermopalp Python API
 
-The `thermopulp` package provides synchronous access to a Thermopulp USB CDC
+The `thermopalp` package provides synchronous access to a Thermopalp USB CDC
 device without launching the desktop UI or creating a Qt event loop. It works
 on Windows, Linux, and macOS through pyserial.
 
 ## Connect and stream
 
 ```python
-from thermopulp import ThermopulpDevice
+from thermopalp import ThermopalpDevice
 
-with ThermopulpDevice("COM21") as device:
+with ThermopalpDevice("COM21") as device:
     print(device.device_info)
     print(device.settings)
 
@@ -21,7 +21,7 @@ with ThermopulpDevice("COM21") as device:
 ```
 
 When no port is supplied, `connect()` auto-selects the device only if discovery
-finds exactly one Thermopulp. An explicit port is required when multiple devices
+finds exactly one Thermopalp. An explicit port is required when multiple devices
 are connected.
 
 The constructor does not access hardware. `connect()` opens the port, clears
@@ -32,13 +32,13 @@ manager always closes the serial handle.
 ## Discovery
 
 ```python
-from thermopulp import discover_devices
+from thermopalp import discover_devices
 
 for device in discover_devices():
     print(device.port, device.serial_number, device.display_name)
 ```
 
-`discover_devices()` filters by the Thermopulp name or its current USB VID/PID.
+`discover_devices()` filters by the Thermopalp name or its current USB VID/PID.
 Pass `include_all_serial=True` when diagnosing a device with custom USB IDs.
 
 ## Streaming methods
@@ -58,7 +58,7 @@ cold-junction temperatures. Temperatures are returned in degrees Celsius.
 ## Settings and calibration
 
 ```python
-with ThermopulpDevice() as device:
+with ThermopalpDevice() as device:
     device.set_sample_interval(1000)
     device.set_channel_mask(0b0101)  # Channels 1 and 3
     device.set_calibration(0, gain_ppm=1_001_250, offset_millidegrees=-300)
@@ -76,11 +76,11 @@ verification.
 
 ## Errors
 
-All API exceptions derive from `ThermopulpError`:
+All API exceptions derive from `ThermopalpError`:
 
-- `ThermopulpConnectionError`: discovery, open, read, or write failure
-- `ThermopulpTimeoutError`: expected response or sample was not received
-- `ThermopulpProtocolError`: malformed, corrupt, or unsupported frame
+- `ThermopalpConnectionError`: discovery, open, read, or write failure
+- `ThermopalpTimeoutError`: expected response or sample was not received
+- `ThermopalpProtocolError`: malformed, corrupt, or unsupported frame
 - `DeviceRejectedError`: typed device `ERROR` response, with `request_type` and
   `error_code` attributes
 
